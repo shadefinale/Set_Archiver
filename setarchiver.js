@@ -37,6 +37,12 @@ function startSet(){
 	selectSet(selected_set);
 	number += 1;
 	updateInterval = setInterval(function(){updateTimestamp(current_set);}, 1);
+	U.addEvent(player1box, 'keyup', updateSetValues);
+    U.addEvent(player2box, 'keyup', updateSetValues);	
+	U.addEvent(bracket_box, 'keyup', updateSetValues);
+	U.addEvent(game_box, 'keyup', updateSetValues);
+	U.addEvent(start_box, 'keyup', updateSetValues);
+	U.addEvent(end_box, 'keyup', updateSetValues);
 }
 
 function stopSet(){
@@ -46,15 +52,31 @@ function stopSet(){
 	U.addEvent(U.$('match_button'), 'click', startSet);	
 }
 
+function updateSetValues(){
+    sets[selected_set].player1 = player1box.value;
+	sets[selected_set].player2 = player2box.value;
+	sets[selected_set].bracket = bracket_box.value;
+	sets[selected_set].game = game_box.value;
+	sets[selected_set].start_timestamp = start_box.value;
+	
+	if (current_set !== sets[selected_set]){
+	    sets[selected_set].end_timestamp = end_box.value;
+	}
+	updateSets();
+}
+
 function selectSet(selection){
     selected_set = selection;
 	selection = sets[selection];
+	
     player1box.value = selection.player1;
 	player2box.value = selection.player2;
 	bracket_box.value = selection.bracket;
 	game_box.value = selection.game;
 	start_box.value = selection.start_timestamp;
 	end_box.value = selection.end_timestamp;
+	
+	U.addEvent
 }
 
 function bind_event(i){
