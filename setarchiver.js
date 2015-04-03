@@ -24,12 +24,17 @@ function startTracking(){
 	U.addEvent(U.$('match_button'), 'click', startSet);
 }
 
+function generate_timestamp(){
+    var cur_time = new Date();
+    return ("0" + (cur_time.getHours() - starttime.getHours())).slice(-2) + ":" + ("0" + (cur_time.getMinutes() - starttime.getMinutes())).slice(-2) + ":" + ("0" + (cur_time.getSeconds()-starttime.getSeconds())).slice(-2);
+}
+
 function startSet(){
     U.$('match_button').innerHTML = "Click to stop set";
     U.removeEvent(U.$('match_button'), 'click', startSet);
 	U.addEvent(U.$('match_button'), 'click', stopSet);
 	
-    sets.push({id:number, player1:"Player 1", player2:"Player 2", bracket:"Bracket", game:"Smash Bros.", start_timestamp:new Date() - starttime, end_timestamp:new Date() - starttime});
+    sets.push({id:number, player1:"Player 1", player2:"Player 2", bracket:"Bracket", game:"Smash Bros.", start_timestamp:generate_timestamp(), end_timestamp:generate_timestamp()});
 	current_set = sets[number]
 	selected_set = number;
 	updateSets();
@@ -43,6 +48,8 @@ function startSet(){
 	U.addEvent(game_box, 'keyup', updateSetValues);
 	U.addEvent(start_box, 'keyup', updateSetValues);
 	U.addEvent(end_box, 'keyup', updateSetValues);
+	U.addEvent(U.$("event_name"), 'keyup', updateSetValues);
+    U.addEvent(U.$("file_name"), 'keyup', updateSetValues);	
 }
 
 function stopSet(){
@@ -50,6 +57,7 @@ function stopSet(){
     U.$('match_button').innerHTML = "Click to start set";
     U.removeEvent(U.$('match_button'), 'click', stopSet);
 	U.addEvent(U.$('match_button'), 'click', startSet);	
+	generateFFmpegOutput();
 }
 
 function updateSetValues(){
@@ -63,6 +71,7 @@ function updateSetValues(){
 	    sets[selected_set].end_timestamp = end_box.value;
 	}
 	updateSets();
+	generateFFmpegOutput();
 }
 
 function selectSet(selection){
@@ -75,8 +84,6 @@ function selectSet(selection){
 	game_box.value = selection.game;
 	start_box.value = selection.start_timestamp;
 	end_box.value = selection.end_timestamp;
-	
-	U.addEvent
 }
 
 function bind_event(i){
@@ -93,7 +100,7 @@ function makeSetsSelectable(){
 
 
 function updateTimestamp(){
-    current_set.end_timestamp = new Date() - starttime;
+    current_set.end_timestamp = generate_timestamp();
 	//alert(current_set.id);
 	document.getElementById("set" + current_set.id.toString()).getElementsByClassName("end_timestamp")[0].innerHTML = current_set.end_timestamp;
 	if (sets[selected_set] == current_set){
@@ -104,6 +111,34 @@ function updateTimestamp(){
 function selectNewSet(new_set){
 	selected_set = sets[new_set];
 	selectSet(selected_set);
+}
+
+function generateFFmpegOutput(){
+    var output = "ffmpeg -i ";
+	
+	var event_name = U.$("event_name").value;
+	
+	output += U.$("file_name").value;
+	
+	for (var i = 0; i < sets.length; i++){
+	    output += " -codec copy -ss ";
+		output += sets[i].start_timestamp;
+		output += " -to ";
+		output += sets[i].end_timestamp;
+        output += " \"";
+		output += event_name;
+		output += " ";
+		output += sets[i].game;
+		output += " ";
+		output += sets[i].bracket;
+		output += " ";
+        output += sets[i].player1;
+        output += " vs ";
+        output += sets[i].player2;
+        output += ".mp4\"";
+	}
+	
+	U.$("output").value = output;
 }
 
 function updateSets(current_set){
@@ -177,8 +212,7 @@ function updateSets(current_set){
 		}
 	}
 	var objDiv = U.$("sets");
-	objDiv.scrollTop = objDiv.scrollHeight;
-	
+	objDiv.scrollTop = objDiv.scrollHeight;	
 }
 	
 	
