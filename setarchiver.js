@@ -25,8 +25,8 @@ function startTracking(){
 }
 
 function generate_timestamp(){
-    var cur_time = new Date();
-    return ("0" + (cur_time.getHours() - starttime.getHours())).slice(-2) + ":" + ("0" + (cur_time.getMinutes() - starttime.getMinutes())).slice(-2) + ":" + ("0" + (cur_time.getSeconds()-starttime.getSeconds())).slice(-2);
+    var elapsed = new Date(new Date() - starttime);
+    return ("0" + elapsed.getUTCHours()).slice(-2) + ":" + ("0" + elapsed.getUTCMinutes()).slice(-2) + ":" + ("0" + elapsed.getUTCSeconds()).slice(-2);
 }
 
 function startSet(){
