@@ -1,0 +1,37 @@
+<head>
+<link rel="stylesheet" type="text/css" href="setarchiver.css">
+
+</head>
+
+<body>
+    <div id="container">
+		<div class="topbar"></div>
+		<div class="main">
+			<div class="fixedwidth">
+				<div id="sets">
+					
+				</div>
+				<div id="match">
+					<div id="match_controls">
+					    <div><button id="match_button">Place Button Here</button></div>
+					</div>
+					<div id="match_info">
+						<input type="text" placeholder="player1" id="match_info_player1"></input>
+						<input type="text" placeholder="player2" id="match_info_player2"></input>
+						<input type="text" placeholder="bracket position" id="match_info_bracket"></input>
+						<input type="text" placeholder="game" id="match_info_game"></input>
+						<input type="text" placeholder="start time"id="match_info_start_timestamp"></input>
+						<input type="text" placeholder="end time" id="match_info_end_timestamp"></input>
+				    </div>
+					<div>Delete</div>
+					<div>Status</div>
+				</div>
+				<div id="output_container">
+					<div>Your ffmpeg command is: <input id="output"></input></div>
+				</div>
+			</div>
+	    </div>
+    </div>
+<script src="utilities.js"></script>
+<script src="setarchiver.js"></script>
+</body>
