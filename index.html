@@ -13,8 +13,9 @@
 				</div>
 				<div id="match">
 					<div id="match_controls">
-					    <div><button id="match_button">Place Button Here</button></div>
+					    <div><button id="match_button">Click to start event!</button></div>
 					</div>
+					<div id="match_info_number">MATCH NUMBER</div>
 					<div id="match_info">
 						<input type="text" placeholder="player1" id="match_info_player1"></input>
 						<input type="text" placeholder="player2" id="match_info_player2"></input>
@@ -25,6 +26,8 @@
 				    </div>
 					<div><input type="text" placeholder="event name" id="event_name"></input></div>
 					<div><input type="text" placeholder="file name" id="file_name"></input></div>
+					<div><input type="text" placeholder="offset" id="match_time_offset"></input></div>
+					<div><button id="compact_button" onclick="compactWindow()">Compact Mode</button></div>
 				</div>
 				<div id="output_container">
 					<div>Your ffmpeg command is: (copy to clipboard with ctrl+a and ctrl+c). <input id="output" readonly></input></div>

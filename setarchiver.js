@@ -11,6 +11,7 @@ var bracket_box = U.$("match_info_bracket");
 var game_box = U.$("match_info_game");
 var start_box = U.$("match_info_start_timestamp");
 var end_box = U.$("match_info_end_timestamp");
+var match_info_number = U.$("match_info_number");
 
 var selected_set;
 
@@ -26,7 +27,7 @@ function startTracking(){
 
 function generate_timestamp(){
     var elapsed = new Date(new Date() - starttime);
-    return ("0" + elapsed.getUTCHours()).slice(-2) + ":" + ("0" + elapsed.getUTCMinutes()).slice(-2) + ":" + ("0" + elapsed.getUTCSeconds()).slice(-2);
+    return ("0" + elapsed.getUTCHours()).slice(-2) + ":" + ("0" + elapsed.getUTCMinutes()).slice(-2) + ":" + ("0" + elapsed.getUTCSeconds()).slice(-2) + "." + ("0" + elapsed.getUTCMilliseconds()).slice(-3);
 }
 
 function startSet(){
@@ -40,6 +41,7 @@ function startSet(){
 	updateSets();
 	makeSetsSelectable();
 	selectSet(selected_set);
+	scrollToBottomSet();
 	number += 1;
 	updateInterval = setInterval(function(){updateTimestamp(current_set);}, 1);
 	U.addEvent(player1box, 'keyup', updateSetValues);
@@ -71,6 +73,7 @@ function updateSetValues(){
 	    sets[selected_set].end_timestamp = end_box.value;
 	}
 	updateSets();
+	makeSetsSelectable();	
 	generateFFmpegOutput();
 }
 
@@ -84,6 +87,7 @@ function selectSet(selection){
 	game_box.value = selection.game;
 	start_box.value = selection.start_timestamp;
 	end_box.value = selection.end_timestamp;
+	match_info_number.innerHTML = "MATCH " + selection.id;
 }
 
 function bind_event(i){
@@ -101,7 +105,6 @@ function makeSetsSelectable(){
 
 function updateTimestamp(){
     current_set.end_timestamp = generate_timestamp();
-	//alert(current_set.id);
 	document.getElementById("set" + current_set.id.toString()).getElementsByClassName("end_timestamp")[0].innerHTML = current_set.end_timestamp;
 	if (sets[selected_set] == current_set){
 	    end_box.value = current_set.end_timestamp;
@@ -211,7 +214,14 @@ function updateSets(current_set){
 			sets_html.appendChild(new_set);
 		}
 	}
-	var objDiv = U.$("sets");
+}
+
+function compactWindow(){
+    window.resizeBy("200","400");    
+}
+
+function scrollToBottomSet(){
+    var objDiv = U.$("sets");
 	objDiv.scrollTop = objDiv.scrollHeight;	
 }
 	
