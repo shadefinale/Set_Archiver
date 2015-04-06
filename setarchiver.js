@@ -34,6 +34,7 @@ function startSet(){
     U.$('match_button').innerHTML = "Click to stop set";
     U.removeEvent(U.$('match_button'), 'click', startSet);
 	U.addEvent(U.$('match_button'), 'click', stopSet);
+	in_set = true;
 	
     sets.push({id:number, player1:"Player 1", player2:"Player 2", bracket:"Bracket", game:"Smash Bros.", start_timestamp:generate_timestamp(), end_timestamp:generate_timestamp()});
 	current_set = sets[number]
@@ -42,6 +43,7 @@ function startSet(){
 	makeSetsSelectable();
 	selectSet(selected_set);
 	scrollToBottomSet();
+	makeRedBackground();
 	number += 1;
 	updateInterval = setInterval(function(){updateTimestamp(current_set);}, 1);
 	U.addEvent(player1box, 'keyup', updateSetValues);
@@ -55,7 +57,9 @@ function startSet(){
 }
 
 function stopSet(){
+    in_set = false;
     clearInterval(updateInterval);
+    makeGreenBackground();
     U.$('match_button').innerHTML = "Click to start set";
     U.removeEvent(U.$('match_button'), 'click', stopSet);
 	U.addEvent(U.$('match_button'), 'click', startSet);	
@@ -87,7 +91,7 @@ function selectSet(selection){
 	game_box.value = selection.game;
 	start_box.value = selection.start_timestamp;
 	end_box.value = selection.end_timestamp;
-	match_info_number.innerHTML = "MATCH " + selection.id;
+	match_info_number.innerHTML = "-- MATCH " + selection.id + " --";
 }
 
 function bind_event(i){
@@ -214,6 +218,9 @@ function updateSets(current_set){
 			sets_html.appendChild(new_set);
 		}
 	}
+	if (in_set){
+	   makeRedBackground();
+	}
 }
 
 function compactWindow(){
@@ -223,6 +230,24 @@ function compactWindow(){
 function scrollToBottomSet(){
     var objDiv = U.$("sets");
 	objDiv.scrollTop = objDiv.scrollHeight;	
+}
+
+function makeRedBackground(){
+    U.$("container").style.backgroundImage = 'linear-gradient(to bottom, rgba(180, 40, 40, 0.6) 0%, rgba(180, 40, 40, 0.8) 100%), url("media/connect.png")';
+    applyColor('linear-gradient(to bottom, rgba(170, 30, 30, 0.7) 0%, rgba(170, 30, 30, 0.8) 100%), url("media/connect.png")',document.getElementsByClassName("set"));
+	U.$("match_button").style.backgroundImage = 'linear-gradient(to bottom, rgba(170, 30, 30, 0.7) 0%, rgba(170, 30, 30, 0.8) 100%), url("media/connect.png")';
+}
+
+function applyColor(color, elements){
+    for (var i = 0; i<elements.length; i++){
+	    elements[i].style.backgroundImage = color;
+	}
+}
+
+function makeGreenBackground(){
+    U.$("container").style.backgroundImage = 'linear-gradient(to bottom, rgba(40, 180, 40, 0.6) 0%, rgba(40, 180, 40, 0.8) 100%), url("media/connect.png")';
+    applyColor('linear-gradient(to bottom, rgba(30, 170, 30, 0.7) 0%, rgba(30, 170, 30, 0.8) 100%), url("media/connect.png")', document.getElementsByClassName("set"));
+	U.$("match_button").style.backgroundImage = 'linear-gradient(to bottom, rgba(30, 170, 30, 0.7) 0%, rgba(30, 170, 30, 0.8) 100%), url("media/connect.png")';	
 }
 	
 	

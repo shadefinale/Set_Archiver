@@ -58,7 +58,7 @@ height:100%;
 }
 
 #sets .set:active{
-    background-image:linear-gradient(to bottom, rgba(20, 160, 20, 0.7) 0%, rgba(20, 160, 20, 0.8) 100%), url("media/connect.png");	
+    -webkit-filter: brightness(90%); 	
 }
 
 #sets .set .set_number{
@@ -150,7 +150,7 @@ height:100%;
 
 #match div{
     text-align:center;
-    margin-top:50px;
+    margin-top:20px;
 }
 
 #output_container {
